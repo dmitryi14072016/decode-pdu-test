@@ -4,117 +4,151 @@
 <meta charset="UTF-8">
 <title>Декодер PDU</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-body{font-family:monospace;background:#000;color:#0f0;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px}
-h1{color:#0f0;text-shadow:0 0 10px #0f0;margin-bottom:30px}
-.panels{display:flex;gap:30px;flex-wrap:wrap;justify-content:center}
-.panel{background:#111;border:2px solid #333;padding:20px;width:400px;border-radius:8px}
-.panel h2{color:#0f0;margin-bottom:12px;font-size:18px}
-textarea{width:100%;height:120px;margin-bottom:12px;background:#000;color:#0f0;border:1px solid #333;font-family:monospace;font-size:14px;padding:10px;border-radius:4px;resize:none}
-textarea:focus{outline:none;border-color:#0f0}
-button{padding:10px 20px;background:#111;color:#0f0;border:1px solid #0f0;cursor:pointer;font-family:monospace;font-size:14px;border-radius:4px}
-button:hover{background:#0f0;color:#000}
-.result-box{margin-top:12px;padding:10px;border:1px dashed #444;min-height:50px;white-space:pre-wrap;word-break:break-all;border-radius:4px;background:#050505}
-.clear-btn{margin-top:20px;font-size:16px;padding:12px 28px}
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: monospace;
+    background: #000;
+    color: #0f0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+  }
+  h1 {
+    color: #0f0;
+    text-shadow: 0 0 10px #0f0;
+    margin-bottom: 30px;
+  }
+  .panels {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .panel {
+    background: #111;
+    border: 2px solid #333;
+    padding: 20px;
+    width: 400px;
+    border-radius: 8px;
+  }
+  .panel h2 {
+    color: #0f0;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+  textarea {
+    width: 100%;
+    height: 120px;
+    margin-bottom: 12px;
+    background: #000;
+    color: #0f0;
+    border: 1px solid #333;
+    font-family: monospace;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 4px;
+    resize: none;
+  }
+  textarea:focus {
+    outline: none;
+    border-color: #0f0;
+  }
+  button {
+    padding: 10px 20px;
+    background: #111;
+    color: #0f0;
+    border: 1px solid #0f0;
+    cursor: pointer;
+    font-family: monospace;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+  button:hover {
+    background: #0f0;
+    color: #000;
+  }
+  .result-box {
+    margin-top: 12px;
+    padding: 10px;
+    border: 1px dashed #444;
+    min-height: 50px;
+    white-space: pre-wrap;
+    word-break: break-all;
+    border-radius: 4px;
+    background: #050505;
+  }
+  .clear-btn {
+    margin-top: 30px;
+    font-size: 16px;
+    padding: 12px 28px;
+  }
 </style>
 </head>
 <body>
-<h1>Декодер PDU</h1>
-<div class="panels">
-  <div class="panel">
-    <h2>Расшифровать</h2>
-    <textarea id="decodeInput" placeholder="Зашифрованный текст"></textarea>
-    <button type="button" onclick="doDecode()">Расшифровать</button>
-    <div class="result-box" id="decodeResult"></div>
+  <h1>Декодер PDU</h1>
+  <div class="panels">
+    <div class="panel">
+      <h2>Расшифровать</h2>
+      <textarea id="decodeInput" placeholder="Зашифрованный текст"></textarea>
+      <button type="button" onclick="doDecode()">Расшифровать</button>
+      <div class="result-box" id="decodeResult"></div>
+    </div>
+    <div class="panel">
+      <h2>Зашифровать</h2>
+      <textarea id="encodeInput" placeholder="Обычный текст"></textarea>
+      <button type="button" onclick="doEncode()">Зашифровать</button>
+      <div class="result-box" id="encodeResult"></div>
+    </div>
   </div>
-  <div class="panel">
-    <h2>Зашифровать</h2>
-    <textarea id="encodeInput" placeholder="Обычный текст"></textarea>
-    <button type="button" onclick="doEncode()">Зашифровать</button>
-    <div class="result-box" id="encodeResult"></div>
-  </div>
-</div>
-<button class="clear-btn" type="button" onclick="clearAll()">Очистить</button>
-<script>
-var map = {
-   "B" : "А",
-   "." : "Б",
-   "D" : "В",
-   "," : "Г",
-   "F" : "Д",
-   "!" : "Е",
-   "H" : "Ж",
-   "?" : "З",
-   "J" : "И",
-   "*" : "К",
-   "L" : "Л",
-   ":" : "М",
-   "N" : "Н",
-   "@" : "О",
-   "P" : "П",
-   "%" : "Р",
-   "R" : "С",
-   "-" : "Т",
-   "T" : "У",
-   "_" : "Ф",
-   "V" : "Х",
-   "=" : "Ц",
-   "W" : "Ч",
-   "+" : "Ш",
-   "U" : "Щ",
-   "(" : "Ы",
-   "Z" : "Ь",
-   ")" : "Э",
-   "|" : "Ю",
-   "/" : "Я"
-};
+  <button class="clear-btn" type="button" onclick="clearAll()">Очистить</button>
 
-var reverseMap = {};
-for (var key in map) {
-  reverseMap[map[key]] = key;
-}
+  <script>
+    var map = {
+      "B": "А", ".": "Б", "D": "В", ",": "Г", "F": "Д", "!": "Е",
+      "H": "Ж", "?": "З", "J": "И", "*": "К", "L": "Л", ":": "М",
+      "N": "Н", "@": "О", "P": "П", "%": "Р", "R": "С", "-": "Т",
+      "T": "У", "_": "Ф", "V": "Х", "=": "Ц", "W": "Ч", "+": "Ш",
+      "U": "Щ", "(": "Ы", "Z": "Ь", ")": "Э", "|": "Ю", "/": "Я"
+    };
 
-function doDecode() {
-  var text = document.getElementById("decodeInput").value;
-  var output = "";
-  for (var i = 0; i < text.length; i++) {
-    var ch = text[i];
-    if (map[ch] !== undefined) {
-      output += map[ch];
-    } else {
-      output += ch;
+    var reverseMap = {};
+    for (var key in map) {
+      reverseMap[map[key]] = key;
     }
-  }
-  document.getElementById("decodeResult").textContent = output;
-}
 
-function doEncode() {
-  var text = document.getElementById("encodeInput").value;
-  var output = "";
-  for (var i = 0; i < text.length; i++) {
-    var ch = text[i];
-    if (reverseMap[ch] !== undefined) {
-      output += reverseMap[ch];
-    } else {
-      output += ch;
+    function doDecode() {
+      var text = document.getElementById("decodeInput").value;
+      var output = "";
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        output += (map[ch] !== undefined) ? map[ch] : ch;
+      }
+      document.getElementById("decodeResult").textContent = output;
     }
-  }
-  document.getElementById("encodeResult").textContent = output;
-}
 
-function clearAll() {
-  // Очищаем поля ввода и результаты
-  document.getElementById("decodeInput").value = "";
-  document.getElementById("encodeInput").value = "";
-  document.getElementById("decodeResult").textContent = "";
-  document.getElementById("encodeResult").textContent = "";
+    function doEncode() {
+      var text = document.getElementById("encodeInput").value;
+      var output = "";
+      for (var i = 0; i < text.length; i++) {
+        var ch = text[i];
+        output += (reverseMap[ch] !== undefined) ? reverseMap[ch] : ch;
+      }
+      document.getElementById("encodeResult").textContent = output;
+    }
 
-  // Возвращаем плейсхолдеры (чтобы подсказки снова появились)
-  document.getElementById("decodeInput").placeholder = "Зашифрованный текст";
-  document.getElementById("encodeInput").placeholder = "Обычный текст";
-
-  // Заголовки (h1 и h2) НЕ трогаем — они остаются как были
-}
-</script>
+    function clearAll() {
+      document.getElementById("decodeInput").value = "";
+      document.getElementById("encodeInput").value = "";
+      document.getElementById("decodeResult").textContent = "";
+      document.getElementById("encodeResult").textContent = "";
+      // Плейсхолдеры сбрасываем, чтобы подсказки вернулись
+      document.getElementById("decodeInput").placeholder = "Зашифрованный текст";
+      document.getElementById("encodeInput").placeholder = "Обычный текст";
+      // Заголовки (h1, h2) здесь не трогаем — они гарантированно остаются
+    }
+  </script>
 </body>
 </html>
