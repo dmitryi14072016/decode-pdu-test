@@ -91,12 +91,14 @@
   <h1>Декодер PDU</h1>
   <div class="panels">
     <div class="panel">
+      <!-- Заголовок останется, так как у него нет ID, который мы трогаем -->
       <h2>Расшифровать</h2>
       <textarea id="decodeInput" placeholder="Зашифрованный текст"></textarea>
       <button type="button" onclick="doDecode()">Расшифровать</button>
       <div class="result-box" id="decodeResult"></div>
     </div>
     <div class="panel">
+      <!-- Заголовок останется -->
       <h2>Зашифровать</h2>
       <textarea id="encodeInput" placeholder="Обычный текст"></textarea>
       <button type="button" onclick="doEncode()">Зашифровать</button>
@@ -140,14 +142,17 @@
     }
 
     function clearAll() {
+      // Очищаем ТОЛЬКО поля с ID
       document.getElementById("decodeInput").value = "";
       document.getElementById("encodeInput").value = "";
       document.getElementById("decodeResult").textContent = "";
       document.getElementById("encodeResult").textContent = "";
-      // Плейсхолдеры сбрасываем, чтобы подсказки вернулись
+      
+      // Возвращаем подсказки
       document.getElementById("decodeInput").placeholder = "Зашифрованный текст";
       document.getElementById("encodeInput").placeholder = "Обычный текст";
-      // Заголовки (h1, h2) здесь не трогаем — они гарантированно остаются
+      
+      // h1 и h2 здесь не упоминаются, поэтому они не могут исчезнуть
     }
   </script>
 </body>
